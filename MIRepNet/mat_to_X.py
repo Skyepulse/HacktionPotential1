@@ -2,7 +2,7 @@ import os
 import scipy.io
 import numpy as np
 
-data_dir = "./data/BNCI2014004"
+data_dir = "./data/BNCI2014004/"
 trial_length_sec = 4
 
 all_trials = []

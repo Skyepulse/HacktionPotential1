@@ -182,6 +182,7 @@ def run_experiment(args, log_file):
     file_handler = open(log_filename, 'w')
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    print("DEVICE", device)
     results = []
 
     # Dataset configuration
