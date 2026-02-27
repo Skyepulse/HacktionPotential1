@@ -1,3 +1,9 @@
+###########################################
+# SCRIPT PYTHON -> UNITY.
+# C'EST LE SCRIPT A MODIFIER QUI ENVERRA 
+# LES INFERENCES DE MIREPNET A UNITY.
+###########################################
+
 # to get python prints in Unity console
 import sys
 sys.stdout.flush()

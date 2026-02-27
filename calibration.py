@@ -1,3 +1,10 @@
+############################################
+# SCRIPT UNITY -> PYTHON.
+# C'EST LE SCRIPT A MODIFIER QUI RECEVRA
+# LES DEMANDES DE CALIBRATION DE UNITY.
+# POTENTIELLEMENT COOL POUR CALIBRER EN DEBUT DE JEU.
+###########################################
+
 # to get python prints in Unity console
 import sys
 sys.stdout.reconfigure(line_buffering=True)
