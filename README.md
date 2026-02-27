@@ -5,3 +5,4 @@
 Sinon on prend un autre modele.
 [3] Calibration.py -> Appelé de Unity vers python, utile si on veut calibrer depuis Unity. Bon exemple de talk LSL entre Unity -> python.
 [4] Input_sender.py -> appele du Unity depuis python Python -> Unity, elle sera ici la boucle d'inférence de notre modèle.
+#test
