@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
   m_Name: OBSTACLE
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 21300000, guid: 7796c32cbc970814aa16c0e047c62b39, type: 3}
+  m_DefaultSprite: {fileID: 21300000, guid: 495fb5fa74653084e99e9873ed8df10c, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []
