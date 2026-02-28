@@ -9,14 +9,17 @@ using UnityEngine;
 //================================//
 class PythonManager: MonoBehaviour
 {
-    static PythonManager instance;
+    public static PythonManager instance;
 
     //================================//
     private String m_pythonPath;
     private Process m_mainInferenceProcess;
+    private Process m_calibrationProcess;
 
     //================================//
     private StreamInlet inlet;
+    private StreamOutlet leftHandOutlet;
+    private StreamOutlet rightHandOutlet;
     private int[] sample;
     private double timestamp;
 
@@ -39,9 +42,6 @@ class PythonManager: MonoBehaviour
                 m_pythonPath = line.Split('=')[1].Trim().Trim('"');
             }
         }
-
-        UnityEngine.Debug.Log("PythonManager initialized with Python path: " + m_pythonPath);
-        StartInferenceProcess();
     }
 
     //================================//
@@ -89,15 +89,70 @@ class PythonManager: MonoBehaviour
     }
 
     //================================//
-    private void Clean()
+    public void StartCalibrationProcess()
+    {
+       CreateOutlets();
+
+        m_calibrationProcess = new Process();
+        m_calibrationProcess.StartInfo.FileName = m_pythonPath;
+        m_calibrationProcess.StartInfo.Arguments = "calibration_loop.py";
+        m_calibrationProcess.StartInfo.WorkingDirectory = "";
+        m_calibrationProcess.StartInfo.UseShellExecute = false;
+        m_calibrationProcess.StartInfo.CreateNoWindow = true;
+        m_calibrationProcess.StartInfo.RedirectStandardOutput = true;
+        m_calibrationProcess.StartInfo.RedirectStandardError = true;
+
+        m_calibrationProcess.OutputDataReceived += (s, e) =>
+        {
+            if (!string.IsNullOrEmpty(e.Data))
+                UnityEngine.Debug.Log("[PY] " + e.Data);
+        };
+
+        m_calibrationProcess.ErrorDataReceived += (s, e) =>
+        {
+            if (string.IsNullOrEmpty(e.Data))
+                return;
+
+            if (e.Data.StartsWith("Traceback") ||
+                e.Data.Contains("Error") ||
+                e.Data.Contains("Exception"))
+            {
+                UnityEngine.Debug.LogError("[PY] " + e.Data);
+            }
+            else
+            {
+                UnityEngine.Debug.Log("[PY] " + e.Data);
+            }
+        };
+
+        m_calibrationProcess.Start();
+        m_calibrationProcess.BeginOutputReadLine();
+        m_calibrationProcess.BeginErrorReadLine(); 
+    }
+
+    //================================//
+    public void Clean()
     {
         if (m_mainInferenceProcess != null && !m_mainInferenceProcess.HasExited)
             m_mainInferenceProcess.Kill();
+
+        if (m_calibrationProcess != null && !m_calibrationProcess.HasExited)
+            m_calibrationProcess.Kill();
 
         if (inlet != null)
         {
             inlet.close_stream();
             inlet = null;
+        }
+
+        if (leftHandOutlet != null)
+        {
+            leftHandOutlet = null;
+        }
+
+        if (rightHandOutlet != null)
+        {
+            rightHandOutlet = null;
         }
     }
 
@@ -131,8 +186,30 @@ class PythonManager: MonoBehaviour
 
         inlet = new StreamInlet(results[0]);
         sample = new int[1];
+    }
 
-        UnityEngine.Debug.Log("LSL stream connected.");
+    //================================//
+    public void CreateOutlets()
+    {
+        StreamInfo info = new StreamInfo(
+            "Left hand movement",   // stream name
+            "Markers",         // stream type
+            1,                 // one channel
+            0,                 // irregular sampling rate
+            channel_format_t.cf_int32,
+            "unity_left_hand"
+        );
+        leftHandOutlet = new StreamOutlet(info);
+        
+        StreamInfo rightHandInfo = new StreamInfo(
+            "Right hand movement",   // stream name
+            "Markers",         // stream type
+            1,                 // one channel
+            0,                 // irregular sampling rate
+            channel_format_t.cf_int32,
+            "unity_right_hand"
+        );
+        rightHandOutlet = new StreamOutlet(rightHandInfo);
     }
 
     //================================//
@@ -156,6 +233,46 @@ class PythonManager: MonoBehaviour
             {
                 GameManager.OnRight();
             }
+        }
+    }
+
+    //================================//
+    public void StartLeftHandMovement()
+    {
+        if (leftHandOutlet != null)
+        {
+            int[] startMsg = new int[] { 1 };
+            leftHandOutlet.push_sample(startMsg);
+        }
+    }
+
+    //================================//
+    public void StartRightHandMovement()
+    {
+        if (rightHandOutlet != null)
+        {
+            int[] startMsg = new int[] { 1 };
+            rightHandOutlet.push_sample(startMsg);
+        }
+    }
+
+    //================================//
+    public void StopLeftHandMovement()
+    {
+        if (leftHandOutlet != null)
+        {
+            int[] stopMsg = new int[] { 0 };
+            leftHandOutlet.push_sample(stopMsg);
+        }
+    }
+
+    //================================//
+    public void StopRightHandMovement()
+    {
+        if (rightHandOutlet != null)
+        {
+            int[] stopMsg = new int[] { 0 };
+            rightHandOutlet.push_sample(stopMsg);
         }
     }
 }

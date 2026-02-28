@@ -398,6 +398,9 @@ public class LevelManager : MonoBehaviour
     //================================//
     public void Restart()
     {
-        ChangeLevel(currentLevel);
+        if (!GameManager.instance.InMainMenu)
+        {
+            ChangeLevel(currentLevel);
+        }
     }
 }
