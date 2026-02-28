@@ -6,9 +6,9 @@ class CalibrationManager: MonoBehaviour
 {
     private bool runningCalibration = false;
 
-    public int totalCalibrations = 12;
-    private int rightHandCalibrations = 6;
-    private int leftHandCalibrations = 6;
+    public int totalCalibrations = 10;
+    private int rightHandCalibrations = 5;
+    private int leftHandCalibrations = 5;
 
     private float showTimer = 0f;
     private float hideTimer = 0f;
@@ -37,8 +37,8 @@ class CalibrationManager: MonoBehaviour
     {
         runningCalibration = true;
 
-        rightHandCalibrations = 6;
-        leftHandCalibrations = 6;
+        rightHandCalibrations = 5;
+        leftHandCalibrations = 5;
 
         calibrationMenu.SetActive(true);
         Title.SetActive(true);

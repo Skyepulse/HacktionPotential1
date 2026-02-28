@@ -10,6 +10,7 @@ import sys
 sys.stdout.reconfigure(line_buffering=True)
 import time
 from pylsl import resolve_byprop, StreamInlet
+from collect_calibration import collect_main, connect_lsl
 
 def main():
     # leaving some time for Unity CalibrationScene to start the LSL data stream
@@ -23,6 +24,8 @@ def main():
         if not streams[stream_name]:
             raise RuntimeError(f"Stream {stream_name} not found")
         inlets[stream_name] = StreamInlet(streams[stream_name][0])
+
+    inletCollection, fs, n_ch =connect_lsl()
     
     running = False
     print("Waiting for control signals...")
@@ -32,12 +35,13 @@ def main():
             if sample is None:
                 continue
             value = bool(sample[0])
-            print(f"Received {stream_name} signal: {value, sample, ts}")
+            isLeft = (stream_name == 'Left hand movement')
     
             if value and not running:
                 running = True
                 print(f"START RECORDING {stream_name}")
-        
+                main = isLeft and 0 or 1 # 0 pour main gauche, 1 pour main droite
+                collect_main(inletCollection, fs, n_ch, main=main, temps=8, npz_path=f"dataset_calibration.npz")
             elif not value and running:
                 running = False
                 print(f"STOP RECORDING {stream_name}")

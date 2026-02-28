@@ -85,3 +85,5 @@ crashlytics-build.properties
 *.bat
 
 python_config.toml
+
+*.npz
