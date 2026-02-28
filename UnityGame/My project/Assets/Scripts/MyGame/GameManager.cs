@@ -9,7 +9,10 @@ using System.Collections.Generic;
 //================================//
 class GameManager: MonoBehaviour
 {
-    static GameManager instance;
+    public static GameManager instance;
+
+    public GameObject mainMenu;
+    public CalibrationManager calibrationManager;
 
     //================================//
     [SerializeField]
@@ -26,8 +29,10 @@ class GameManager: MonoBehaviour
 
     private int currentLevelIndex = 0;
 
+    public bool InMainMenu = true;
+
     //================================//
-    void InitGame()
+    public void InitGame()
     {
         if (levels.Length == 0)
         {
@@ -35,7 +40,41 @@ class GameManager: MonoBehaviour
             return;
         }
 
+        // Hide Main Menu
+        mainMenu.SetActive(false);
+        InMainMenu = false;
+
+        PythonManager.instance.StartInferenceProcess();
         levelManager.ChangeLevel(levels[currentLevelIndex]);
+    }
+
+    //================================//
+    public void InitCalibration()
+    {
+        mainMenu.SetActive(false);
+        InMainMenu = false;
+
+        calibrationManager.StartCalibration();
+        PythonManager.instance.StartCalibrationProcess();
+    }
+
+    //================================//
+    public void ExitApplication()
+    {
+        PythonManager.instance.Clean();
+        Application.Quit();
+    }
+    //================================//
+    public void ReturnToMainMenu()
+    {
+        // Show Main Menu
+        mainMenu.SetActive(true);
+        InMainMenu = true;
+
+        // Clean up game state
+        levelManager.Cleanup();
+        PythonManager.instance.Clean();
+        calibrationManager.StopCalibration();
     }
     
     //================================//
@@ -51,12 +90,17 @@ class GameManager: MonoBehaviour
         DontDestroyOnLoad(gameObject);
         UnityEngine.Debug.Log("GameManager initialized");
 
-        InitGame();
+        mainMenu.SetActive(true);
     }
 
     //================================//
     public static void OnLeft()
     {
+        if (instance.InMainMenu)
+        {
+            return;
+        }
+
         if (instance.levelManager.IsMoving)
             return;
 
@@ -69,6 +113,11 @@ class GameManager: MonoBehaviour
     //================================//
     public static void OnRight()
     {
+        if (instance.InMainMenu)
+        {
+            return;
+        }
+
         if (instance.levelManager.IsMoving)
             return;
 
@@ -81,7 +130,7 @@ class GameManager: MonoBehaviour
     //================================//
     private void Update()
     {
-        if (!instance.levelManager)
+        if (!instance.levelManager || instance.InMainMenu)
             return;
 
         if (leverTimer > 0f)
