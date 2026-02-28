@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d1514134bc4fbd41bb739b1b9a49231, type: 3}
   m_Name: GOAL
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 21300000, guid: 31d04909b74918549bdabb435ab10f9a, type: 3}
+  m_DefaultSprite: {fileID: 21300000, guid: b979a7f9c2c418141b7fcfe151df7474, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []

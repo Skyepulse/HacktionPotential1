@@ -1,20 +1,24 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
+using System;
 
 //================================//
 public enum TileType
 {
     Floor = 0,
-    Wall = 1,
-    Obstacle = 2,
-    Goal = 3,
-    Stop = 4,
+    WallHorizontal = 1,
+    WallVertical = 2,
+    Obstacle = 3,
+    Box = 4,
+    Goal = 5,
+    Stop = 6,
 }
 
 //================================//
 public abstract class LevelTemplate : MonoBehaviour
 {
-    public const int Rows = 10;
-    public const int Cols = 15;
+    public const int Rows = 15;
+    public const int Cols = 25;
 
     protected TileType[,] grid = new TileType[Rows, Cols];
 
@@ -28,6 +32,8 @@ public abstract class LevelTemplate : MonoBehaviour
 
     //================================//
     protected abstract void BuildGrid();
+    public abstract Tuple<int, int> GetPlayerStartPosition(); 
+    public abstract int GetPlayerStartDirection();
 
     //================================//
     protected void Set(int row, int col, TileType type)
