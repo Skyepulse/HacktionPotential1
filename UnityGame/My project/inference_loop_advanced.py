@@ -8,6 +8,21 @@ import random
 import sys
 sys.stdout.flush()
 from pylsl import StreamInfo, StreamOutlet
+import torch
+import torch.nn.functional as F
+import torchvision
+import torchaudio
+import numpy as np
+import scipy
+import mne
+import pandas as pd
+import sklearn
+import matplotlib
+import pylsl
+import einops
+import wandb
+import moabb
+import tqdm
 import time
 
 from collect_realtime import connect_lsl, iter_sliding_windows
@@ -27,7 +42,7 @@ def main(): # LSL vers unity de markers 0/1 :
     print(f"LSL outlet started: {info.name()}")
 
     name_connect = "Explore_AACG_ExG"
-    name_connect = "EEGStream"  # TODO A changer pour le vrai nom : Explore_AACG_ExG
+    #name_connect = "EEGStream"  # TODO A changer pour le vrai nom : Explore_AACG_ExG
 
     while True:
         inlet, fs, n_ch = connect_lsl(name_connect)

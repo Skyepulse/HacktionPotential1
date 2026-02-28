@@ -180,7 +180,7 @@ def main(): # LSL vers unity de markers 0/1 :
     print(f"LSL outlet started: {info.name()}")
 
     name_connect = "Explore_AACG_ExG"
-    name_connect = "EEGStream"  # TODO A changer pour le vrai nom : Explore_AACG_ExG
+    #name_connect = "EEGStream"  # TODO A changer pour le vrai nom : Explore_AACG_ExG
 
     npz_path = "dataset_calibration.npz"
     data = np.load(npz_path)
@@ -195,7 +195,7 @@ def main(): # LSL vers unity de markers 0/1 :
     while True:
         inlet, fs, n_ch = connect_lsl(name_connect)
 
-        for W in iter_sliding_windows(inlet, fs, n_ch, win_s=6.0, hop_s=2.0):
+        for W in iter_sliding_windows(inlet, fs, n_ch, win_s=6.0, hop_s=4.5):
             
             W_reshaped = W.reshape(1, W.shape[0], W.shape[1])
             prediction = lda_predict_from_npz(W_reshaped, model)

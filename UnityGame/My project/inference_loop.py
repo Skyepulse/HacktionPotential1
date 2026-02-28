@@ -27,7 +27,7 @@ def main(): # LSL vers unity de markers 0/1 :
     print(f"LSL outlet started: {info.name()}")
 
     name_connect = "Explore_AACG_ExG"
-    name_connect = "EEGStream"  # TODO A changer pour le vrai nom : Explore_AACG_ExG
+    #name_connect = "EEGStream"  # TODO A changer pour le vrai nom : Explore_AACG_ExG
 
     while True:
         inlet, fs, n_ch = connect_lsl(name_connect)

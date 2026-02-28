@@ -4,7 +4,7 @@ import numpy as np
 import pylsl
 
 name = "Explore_AACG_ExG" # TODO A changer pour le vrai nom : Explore_AACG_ExG
-name = "EEGStream" # TODO A changer pour le vrai nom : Explore_AACG_ExG
+#name = "EEGStream" # TODO A changer pour le vrai nom : Explore_AACG_ExG
 def connect_lsl(stream_name=name, timeout=5): # TODO A changer pour le vrai nom : Explore_AACG_ExG
     streams = pylsl.resolve_byprop("name", name, timeout=timeout)
     if not streams:

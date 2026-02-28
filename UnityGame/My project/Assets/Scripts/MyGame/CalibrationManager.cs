@@ -37,8 +37,8 @@ class CalibrationManager: MonoBehaviour
     {
         runningCalibration = true;
 
-        rightHandCalibrations = 5;
-        leftHandCalibrations = 5;
+        rightHandCalibrations = 10;
+        leftHandCalibrations = 10;
 
         calibrationMenu.SetActive(true);
         Title.SetActive(true);
