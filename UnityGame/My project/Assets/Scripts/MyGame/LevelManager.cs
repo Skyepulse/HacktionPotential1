@@ -45,7 +45,9 @@ public class LevelManager : MonoBehaviour
     private GameObject playerInstance;
     private Direction playerDirection = Direction.Up;
     private bool isMoving = false;
+    private bool isRotating = false;
     public bool IsMoving => isMoving;
+    public bool IsRotating => isRotating;
 
     private Tuple<int, int> moveStartPos;
     private Tuple<int, int> moveTargetPos;
@@ -53,6 +55,11 @@ public class LevelManager : MonoBehaviour
     public float moveSpeed = 7f; // Tiles per second
     [HideInInspector]
     public float moveStartTime;
+
+    [HideInInspector]
+    public float rotateTimer = 0f;
+    [HideInInspector]
+    public float rotateDuration = 0.3f;
 
     Dictionary<Tuple<int, int>, TileType> hiddenTiles = new Dictionary<Tuple<int, int>, TileType>();
 
@@ -180,6 +187,15 @@ public class LevelManager : MonoBehaviour
 
             playerInstance.transform.position = new Vector3(baseX + offsetX, baseY + offsetY, playerInstance.transform.position.z);
             return;
+        }
+
+        if (isRotating)
+        {
+            rotateTimer -= Time.deltaTime;
+            if (rotateTimer <= 0f)
+            {
+                isRotating = false;
+            }
         }
 
         if (isMoving)
@@ -318,17 +334,19 @@ public class LevelManager : MonoBehaviour
     //================================//
     public void RotatePlayer()
     {
-        if (isMoving || inSmallAnimation)
+        if (isMoving || inSmallAnimation || isRotating)
             return;
 
         playerDirection = (Direction)(((int)playerDirection + 1) % 4);
         playerInstance.transform.rotation = Quaternion.Euler(0, 0, -90f * (int)playerDirection);
+        isRotating = true;
+        rotateTimer = rotateDuration;
     }
 
     //================================//
     public void Move()
     {
-        if (isMoving || inSmallAnimation)
+        if (isMoving || inSmallAnimation || isRotating)
             return;
 
         int dr = 0, dc = 0;
