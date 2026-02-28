@@ -22,7 +22,7 @@ class GameManager: MonoBehaviour
     private BoardVisuals boardVisuals;
 
     [SerializeField]
-    private LevelTemplate[] levels;
+    public LevelTemplate[] levels;
 
     private float leverTimer = 0f;
     private float buttonTimer = 0f;

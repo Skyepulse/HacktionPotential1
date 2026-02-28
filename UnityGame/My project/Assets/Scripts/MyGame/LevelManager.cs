@@ -59,6 +59,10 @@ public class LevelManager : MonoBehaviour
     private bool willWin = false;
 
     //================================//
+    private bool inSmallAnimation = false;
+    private float smallAnimationTimer = 0f;
+
+    //================================//
     TileType GetHiddenTile(int r, int c)
     {
         Tuple<int, int> pos = Tuple.Create(r, c);
@@ -147,6 +151,37 @@ public class LevelManager : MonoBehaviour
     //================================//
     private void Update()
     {
+        if (inSmallAnimation)
+        {
+            smallAnimationTimer -= Time.deltaTime;
+            if (smallAnimationTimer <= 0f)
+            {
+                inSmallAnimation = false;
+            }
+
+            // Animate a small front-to-back movement based on the player's current tile
+            float animProgress = 1f - (smallAnimationTimer / 1.0f);
+            float animDistance = 0.15f;
+
+            // Get the base position of the player's tile
+            Tuple<float, float> baseWorldPos = GetTileWorldPosition(playerPosition);
+            float baseX = baseWorldPos.Item1;
+            float baseY = baseWorldPos.Item2;
+
+            float offsetX = 0f, offsetY = 0f;
+            float animOffset = animDistance * Mathf.Sin(animProgress * Mathf.PI);
+            switch (playerDirection)
+            {
+                case Direction.Up:    offsetY = animOffset; break;
+                case Direction.Down:  offsetY = -animOffset; break;
+                case Direction.Left:  offsetX = -animOffset; break;
+                case Direction.Right: offsetX = animOffset; break;
+            }
+
+            playerInstance.transform.position = new Vector3(baseX + offsetX, baseY + offsetY, playerInstance.transform.position.z);
+            return;
+        }
+
         if (isMoving)
         {
             int numMoveTiles = Mathf.Max(Mathf.Abs(moveTargetPos.Item1 - moveStartPos.Item1), Mathf.Abs(moveTargetPos.Item2 - moveStartPos.Item2));
@@ -283,7 +318,7 @@ public class LevelManager : MonoBehaviour
     //================================//
     public void RotatePlayer()
     {
-        if (isMoving)
+        if (isMoving || inSmallAnimation)
             return;
 
         playerDirection = (Direction)(((int)playerDirection + 1) % 4);
@@ -293,7 +328,7 @@ public class LevelManager : MonoBehaviour
     //================================//
     public void Move()
     {
-        if (isMoving)
+        if (isMoving || inSmallAnimation)
             return;
 
         int dr = 0, dc = 0;
@@ -364,6 +399,8 @@ public class LevelManager : MonoBehaviour
         if (tilesMoved == 0)
         {
             UnityEngine.Debug.Log("Cannot move");
+            inSmallAnimation = true;
+            smallAnimationTimer = 0.2f;
             return;
         }
 
@@ -379,6 +416,7 @@ public class LevelManager : MonoBehaviour
     public void Cleanup()
     {
         isMoving = false;
+        inSmallAnimation = false;
         playerDirection = Direction.Up;
         hiddenTiles.Clear();
         if (playerInstance)
@@ -401,6 +439,17 @@ public class LevelManager : MonoBehaviour
         if (!GameManager.instance.InMainMenu)
         {
             ChangeLevel(currentLevel);
+        }
+    }
+
+    //================================//
+    public void NextLevel()
+    {
+        if (!GameManager.instance.InMainMenu)
+        {
+            int currentIndex = Array.IndexOf(GameManager.instance.levels, currentLevel);
+            int nextIndex = (currentIndex + 1) % GameManager.instance.levels.Length;
+            ChangeLevel(GameManager.instance.levels[nextIndex]);
         }
     }
 }
