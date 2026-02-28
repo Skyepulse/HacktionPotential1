@@ -1,8 +1,41 @@
-# STRUCTURE DU REPO
+# Hackaton Potential 2026 TEAM M^2YELODY: GAME FROM EEG SIGNAL DECODING
 
-[1] ASSETS/PACKAGES/PROJECTSETTINGS -> Specifics de Unity.
-[2] MIREPNET -> tout ce qui contient le modele et des scripts de base de MiRepNet dont FINETUNE.PY -> Principale entree pour finetune le modele sur des données supplementaires. Pour le moment ca sauvegarde pas le modele finetuné, A CHANGER!!!
-Sinon on prend un autre modele.
-[3] Calibration.py -> Appelé de Unity vers python, utile si on veut calibrer depuis Unity. Bon exemple de talk LSL entre Unity -> python.
-[4] Input_sender.py -> appele du Unity depuis python Python -> Unity, elle sera ici la boucle d'inférence de notre modèle.
-#test
+This repository is the main repo of our hackaton work done by Mathis Mallet, Yannaël Bossard, Leo Garcia-Cochard, Elsa Roy, Maël Rios.
+
+The goal of this Neurosciences focused hackaton project was to create an interactive game whose inputs would be derived from brain activity captured by an EEG and shared through LSL pipelibnes, decoding them with ML and DL models and algorithms.
+
+You will find the main slides as well as the entire repository with the game, scripts and some rough datasets.
+
+
+# SLIDES
+
+<p align="center">
+  <img src="IMGS/1.png" width="600"/>
+</p>
+<p align="center">
+  <img src="IMGS/2.png" width="600"/>
+</p>
+<p align="center">
+  <img src="IMGS/3.png" width="600"/>
+</p>
+<p align="center">
+  <img src="IMGS/4.png" width="600"/>
+</p>
+<p align="center">
+  <img src="IMGS/5.png" width="600"/>
+</p>
+<p align="center">
+  <img src="IMGS/6.png" width="600"/>
+</p>
+<p align="center">
+  <img src="IMGS/7.png" width="600"/>
+</p>
+<p align="center">
+  <img src="IMGS/8.png" width="600"/>
+</p>
+<p align="center">
+  <img src="IMGS/9.png" width="600"/>
+</p>
+<p align="center">
+  <img src="IMGS/10.png" width="600"/>
+</p>

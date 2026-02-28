@@ -2414,7 +2414,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   totalCalibrations: 20
   showDuration: 9
-  hideDuration: 0.1
+  hideDuration: 0.6
   leftHandVisuals: {fileID: 1367963417}
   rightHandVisuals: {fileID: 277179524}
   calibrationMenu: {fileID: 944163208}

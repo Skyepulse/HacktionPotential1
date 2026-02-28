@@ -903,6 +903,7 @@ MonoBehaviour:
   OnButton: {fileID: 5850794088454313944}
   OffButton: {fileID: 1019769083158452546}
   offset: {fileID: 7098011184313013909}
+  baseScale: 0.15
 --- !u!1 &8866688417350926980
 GameObject:
   m_ObjectHideFlags: 0

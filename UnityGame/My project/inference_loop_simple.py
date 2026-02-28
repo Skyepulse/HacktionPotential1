@@ -80,7 +80,8 @@ def calibrate_from_npz(data,
     # --- Compute midpoint ---
     mean0 = LD1[y==0].mean()
     mean1 = LD1[y==1].mean()
-    midpoint = (mean0 + mean1) / 2
+    epsilon_left = 0.5
+    midpoint = (mean0 + epsilon_left + mean1) / 2
 
     sigma = np.std(LD1)
     margin = margin_factor * sigma
@@ -187,7 +188,7 @@ def main(): # LSL vers unity de markers 0/1 :
     model = calibrate_from_npz(
         data,
         fs = data['fs'].item(),
-        margin_factor=0.5,
+        margin_factor=0.2,
         show_kpi=False,
         show_lda=False
     )
