@@ -51,7 +51,7 @@ class PythonManager: MonoBehaviour
 
         m_mainInferenceProcess = new Process();
         m_mainInferenceProcess.StartInfo.FileName = m_pythonPath;
-        m_mainInferenceProcess.StartInfo.Arguments = "inference_loop.py";
+        m_mainInferenceProcess.StartInfo.Arguments = "inference_loop_simple.py";
         m_mainInferenceProcess.StartInfo.WorkingDirectory = "";
         m_mainInferenceProcess.StartInfo.UseShellExecute = false;
         m_mainInferenceProcess.StartInfo.CreateNoWindow = true;

@@ -40,8 +40,11 @@ def main():
             if value and not running:
                 running = True
                 print(f"START RECORDING {stream_name}")
-                main = isLeft and 0 or 1 # 0 pour main gauche, 1 pour main droite
-                collect_main(inletCollection, fs, n_ch, main=main, temps=8, npz_path=f"dataset_calibration.npz")
+                if isLeft:
+                    main = 0
+                else:
+                    main = 1
+                collect_main(inletCollection, fs, n_ch, main=main, npz_path=f"dataset_calibration.npz")
             elif not value and running:
                 running = False
                 print(f"STOP RECORDING {stream_name}")
